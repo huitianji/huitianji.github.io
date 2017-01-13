@@ -159,6 +159,62 @@ for (i in man) if (hasOwn.call(man, i)) { // 过滤
 
 
 
+*【（不）扩展内置原型((Not) Augmenting Built-in Prototypes)】
+
+xxx
+
+
+*【switch模式(switch Pattern)】
+你可以通过类似下面形式的switch语句增强可读性和健壮性：
+var inspect_me = 0,
+    result = '';
+switch (inspect_me) {
+case 0:
+   result = "zero";
+   break;
+case 1:
+   result = "one";
+   break;
+default:
+   result = "unknown";
+}
+
+这个简单的例子中所遵循的风格约定如下：
+
+每个case和switch对齐（花括号缩进规则除外）
+每个case中代码缩进
+每个case以break清除结束
+避免贯穿（故意忽略break）。如果你非常确信贯穿是最好的方法，务必记录此情况，因为对于有些阅读人而言，它们可能看起来是错误的。
+以default结束switch：确保总有健全的结果，即使无情况匹配。
+
+*【避免隐式类型转换(Avoiding Implied Typecasting )】
+
+JavaScript的变量在比较的时候会隐式类型转换。这就是为什么一些诸如：false == 0 或 “” == 0 返回的结果是true。
+为避免引起混乱的隐含类型转换，在你比较值和表达式类型的时候始终使用===和!==操作符。
+var zero = 0;
+if (zero === false) {
+   // 不执行，因为zero为0, 而不是false
+}
+
+// 反面示例
+if (zero == false) {
+   // 执行了...
+}
+
+
+还有另外一种思想观点认为==就足够了===是多余的。例如，当你使用typeof你就知道它会返回一个字符串，所以没有使用严格相等的理由。
+然而，JSLint要求严格相等，它使代码看上去更有一致性，可以降低代码阅读时的精力消耗。（“==是故意的还是一个疏漏？”）
+
+
+
+*【编码规范(Coding Conventions)】
+建立和遵循编码规范是很重要的，这让你的代码保持一致性，可预测，更易于阅读和理解。一个新的开发者加入这个团队可以通读规范，理解其它团队成员书写的代码，更快上手干活。
+
+许多激烈的争论发生会议上或是邮件列表上，问题往往针对某些代码规范的特定方面（例如代码缩进，是Tab制表符键还是space空格键）。
+如果你是 你组织中建议采用规范的，准备好面对各种反对的或是听起来不同但很强烈的观点。要记住，建立和坚定不移地遵循规范要比纠结于规范的细节重要的多。
+
+*【缩进(Indentation)】
+
 
 
 
