@@ -1,3 +1,29 @@
+
+<<硬编码>>
+在计算机程序或文本编辑中，硬编码是指将可变变量用一个固定值来代替的方法。
+用这种方法编译后，如果以后需要更改此变量就非常困难了。
+大部分程序语言里，可以将一个固定数值定义为一个标记，然后用这个特殊标记来取代变量名称。
+当标记名称改变时，变量名不变，这样，当重新编译整个程序时，所有变量都不再是固定值，这样就更容易的实现了改变变量的目的。
+尽管通过编辑器的查找替换功能也能实现整个变量名称的替换，但也很有可能出现多换或者少换的情况，而在计算机程序中，任何小错误的出现都是不可饶恕的。
+最好的方法是单独为变量名划分空间，来实现这种变化，就如同前面说的那样，将需要改变的变量名暂时用一个定义好的标记名称来代替就是一种很好的方法。
+通常情况下，都应该避免使用硬编码方法。　
+
+java小例子： int a=2,b=2;
+硬编码：if(a==2) return false;
+不是硬编码 if(a==b) return true;
+
+C++例子：
+int user[120];
+如果突然在程序中出现下面一段代码
+for (int i=0; i<120; i++){
+...
+}
+120是什么，为什么是120？这里的120就属于数字式“硬编码”，这不仅让程序很难读，而且不易维护。如果要修改120，就的修改程序中所有与此有关的120。应将数字式“硬编码”声明成一个宏，这样程序不仅易读，而且还可以一改全改。
+#define MAX_USER_CNT 120
+for (int i=0; i<MAX_USER_CNT; i++){
+...
+}[1]
+
 *【for-in循环(for-in Loops)】
 for-in循环应该用在非数组对象的遍历上，使用for-in进行循环也被称为“枚举”。
 从技术上将，你可以使用for-in循环数组（因为JavaScript中数组也是对象），但这是不推荐的。
@@ -47,6 +73,111 @@ for-in循环应该用在非数组对象的遍历上，使用for-in进行循环�
 
 1> 不要用for in遍历数组，全部统一采用标准的for循环变量数组( 我们无法保证我们引入的js是否会采用prototype扩展原生的Array )
 2> 如果要对js的原生类扩展的时候，不要采用prototype了
+
+
+---
+
+
+有个很重要的hasOwnProperty()方法，当遍历对象属性的时候可以过滤掉从原型链上下来的属性。
+思考下面一段代码:
+
+// 对象
+var man = {
+   hands: 2,
+   legs: 2,
+   heads: 1
+};
+
+// 在代码的某个地方
+// 一个方法添加给了所有对象
+if (typeof Object.prototype.clone === "undefined") {
+   Object.prototype.clone = function () {};
+}
+
+{
+在这个例子中，我们有一个使用对象字面量定义的名叫man的对象。
+在man定义完成后的某个地方，在对象原型上增加了一个很有用的名叫 clone()的方法。
+此原型链是实时的，这就意味着所有的对象自动可以访问新的方法。
+为了避免枚举man的时候出现clone()方法，你需要应用hasOwnProperty()方法过滤原型属性。
+如果不做过滤，会导致clone()函数显示出来，在大多数情况下这是不希望出现的。
+}
+
+// 1.
+// for-in 循环
+for (var i in man) {
+   if (man.hasOwnProperty(i)) { // 过滤
+      console.log(i, ":", man[i]);
+   }
+}
+/* 控制台显示结果
+hands : 2
+legs : 2
+heads : 1
+*/
+// 2.
+// 反面例子:
+// for-in loop without checking hasOwnProperty()
+for (var i in man) {
+   console.log(i, ":", man[i]);
+}
+/*
+控制台显示结果
+hands : 2
+legs : 2
+heads : 1
+clone: function()
+*/
+
+
+另外一种使用hasOwnProperty()的形式是取消Object.prototype上的方法。像是：
+for (var i in man) {
+   if (Object.prototype.hasOwnProperty.call(man, i)) { // 过滤
+      console.log(i, ":", man[i]);
+   }
+}
+
+其好处在于在man对象重新定义hasOwnProperty情况下避免命名冲突。也避免了长属性查找对象的所有方法，你可以使用局部变量“缓存”它。
+
+var i, hasOwn = Object.prototype.hasOwnProperty;
+for (i in man) {
+    if (hasOwn.call(man, i)) { // 过滤
+        console.log(i, ":", man[i]);
+    }
+}
+
+<<严格来说，不使用hasOwnProperty()并不是一个错误。
+根据任务以及你对代码的自信程度，你可以跳过它以提高些许的循环速度。
+但是当你对当前对象内容（和其原型链）不确定的时候，添加hasOwnProperty()更加保险些。>>
+
+格式化的变化（通不过JSLint）会直接忽略掉花括号，把if语句放到同一行上。其优点在于循环语句读起来就像一个完整的想法（每个元素都有一个自己的属性”X”，使用”X”干点什么）：
+
+// 警告： 通不过JSLint检测
+var i, hasOwn = Object.prototype.hasOwnProperty;
+for (i in man) if (hasOwn.call(man, i)) { // 过滤
+    console.log(i, ":", man[i]);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
