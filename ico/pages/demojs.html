@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    /*
+    function foo(){
+        return bar();
+    }
+    function bar(){
+        return baz();
+    }
+    function baz(){
+        debugger;
+    }
+    foo();
+    */
+    //--2
+
+    function foo(){
+        return bar();
+    }
+    var bar = function(){
+        return baz();
+    }
+    function baz(){
+        debugger;
+    }
+    foo();
+
+    //--3
+    /*
+    function foo(){
+        return bar();
+    }
+    var bar = (function(){
+        if (window.addEventListener) {
+            return function(){
+                return baz();
+            };
+        }
+        else if (window.attachEvent) {
+            return function() {
+                return baz();
+            };
+        }
+    })();
+    function baz(){
+        debugger;
+    }
+    foo();
+    */
+
+    //--4
+    /*
+    function foo(){
+        return bar();
+    }
+    var bar = (function(){
+        if (window.addEventListener) {
+            return function bar(){
+                return baz();
+            };
+        }
+        else if (window.attachEvent) {
+            return function bar() {
+                return baz();
+            };
+        }
+    })();
+    function baz(){
+        debugger;
+    }
+    foo();
+    */
+</script>
+</body>
+</html>
