@@ -166,6 +166,7 @@
     }
     //紧耦合扩展
     {
+        /*
         var blogModule = (function (my) {
 
             var my = {}, privateName = "mm--";
@@ -185,6 +186,25 @@
             return my;
 
         }(blogModule));
+        */
+    }
+    //克隆与继承
+    {
+        var blogModule = (function (my) {
+            var my = {}, privateName = "/--/";
+            function privateAddTopic (data) {
+                return 1;
+            };
+
+            my.name = privateName;
+            my.addTopic = function (data) {
+                return privateAddTopic(data);
+            };
+
+            return my;
+
+        }(blogModule || {}));
+
     }
 
 
