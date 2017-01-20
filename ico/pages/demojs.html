@@ -19,7 +19,7 @@
     foo();
     */
     //--2
-
+    /*
     function foo(){
         return bar();
     }
@@ -30,7 +30,7 @@
         debugger;
     }
     foo();
-
+    */
     //--3
     /*
     function foo(){
@@ -76,6 +76,121 @@
     }
     foo();
     */
+    //测试内存
+    /*
+    function createFn() {
+        return (function() {
+            var f,F;
+            if (true) {
+                f = function F() {
+                    return "a1";
+                }
+            }
+            else if (false) {
+                f = function F() {
+                    return "a2";
+                }
+            }
+            else {
+                f = function F() {
+                    return "a3";
+                }
+            }
+
+            // F = null;
+            return f;
+
+        })();
+    }
+
+    var arr = [];
+    for (var i = 0; i < 1000; i++) {
+        arr[i] = createFn();
+    }
+
+    */
+    //var m = function fun(a, b) {return a + b;}(2,3)
+
+    {
+        //--0
+        /*
+        var blogModule = (function () {
+            var my = {}, privateName = "bobolai";
+            function privateAddTopic(data) {
+            };
+            my.name = privateName;
+            my.addTopic = function (data) {
+                privateAddTopic(data);
+            };
+            return my;
+        }());
+        */
+        //--0end
+    }
+    //扩展
+    {
+        /*
+        var blogModule = (function (my) {
+            var my = {}, privateName = "aa";
+            function privateAddTopic (data) {
+
+            };
+            my.name = privateName;
+            my.addTopic = function (data) {
+                privateAddTopic(data);
+            };
+
+            return my;
+
+        }(blogModule));
+        */
+    }
+    //松耦合扩展
+    {
+        /*
+        var blogModule = (function (my) {
+            var my = {}, privateName = "aa--";
+            function privateAddTopic (data) {
+                return 1;
+            };
+
+            my.name = privateName;
+            my.addTopic = function (data) {
+                return privateAddTopic(data);
+            };
+
+            return my;
+
+        }(blogModule || {}));
+        */
+    }
+    //紧耦合扩展
+    {
+        var blogModule = (function (my) {
+
+            var my = {}, privateName = "mm--";
+            function privateAddTopic (data) {
+
+            };
+            my.name = privateName;
+            my.addTopic = function (data) {
+                privateAddTopic (data);
+            };
+
+            var oldAddPhotoMethod = my.AddPhoto;
+            my.AddPhoto = function () {
+                // 重载方法，依然可通过oldAddPhotoMethod调用旧的方法
+            };
+
+            return my;
+
+        }(blogModule));
+    }
+
+
+
+
+
 </script>
 </body>
 </html>
